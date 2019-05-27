@@ -1,0 +1,25 @@
+spring:
+  mail:
+    host: localhost
+    port: 2525
+    username: admin
+    password: admin
+    properties:
+      mail:
+        smtp:
+          auth: false
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/shield?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true
+    username: root
+    password: passw0rd
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database: mysql
+server:
+  port: 9090
+
+iam:
+  app:
+    activationDomainUrl: http://localhost:9090/activation
