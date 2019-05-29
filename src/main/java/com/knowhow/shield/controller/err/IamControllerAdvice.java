@@ -1,6 +1,7 @@
-package com.knowhow.shield.controller.error;
+package com.knowhow.shield.controller.err;
 
 import com.knowhow.shield.Exception.UserIsAlreadyExistException;
+import com.knowhow.shield.Exception.UserNotFoundException;
 import com.knowhow.shield.Exception.VerificationTokeIsNotValidException;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +27,11 @@ public class IamControllerAdvice {
 
     @ExceptionHandler(VerificationTokeIsNotValidException.class)
     public ResponseEntity<String> verificationTokeException(VerificationTokeIsNotValidException exp) {
+        return error(exp, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<String> userNotFoundException(UserNotFoundException exp) {
         return error(exp, HttpStatus.NOT_FOUND);
     }
 
