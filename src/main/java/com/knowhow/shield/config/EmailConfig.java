@@ -37,7 +37,7 @@ public class EmailConfig {
     public SimpleMailMessage activationMessage() {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setText(
-                "Hi %s,\n please click in this link :\n%s\\%s\n to activate your account. \n Thanks you");
+                "Hi %s,\n please click in this link :\n %s/%s\n to activate your account. \n Thanks you");
         return message;
     }
 }

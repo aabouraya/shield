@@ -3,27 +3,26 @@ package com.knowhow.shield.controller;
 import com.knowhow.shield.dto.RegistrationDto;
 import com.knowhow.shield.service.ActivationService;
 import com.knowhow.shield.service.RegistrationService;
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class SignUpController {
+public class RegistrationController {
 
     private RegistrationService registrationService;
     private ActivationService activationService;
 
-    SignUpController(RegistrationService registrationService, ActivationService activationService) {
+    RegistrationController(RegistrationService registrationService, ActivationService activationService) {
         this.activationService = activationService;
         this.registrationService = registrationService;
     }
 
     @PostMapping(value = "/registration")
-    public Long signUp(HttpServletRequest request, @Valid RegistrationDto user) {
-        request.getRequestURI();
+    public Long signUp(@Valid @RequestBody RegistrationDto user) {
         return registrationService.register(user);
     }
 
