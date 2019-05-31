@@ -4,6 +4,8 @@ import com.knowhow.shield.dto.RegistrationDto;
 import com.knowhow.shield.service.ActivationService;
 import com.knowhow.shield.service.RegistrationService;
 import javax.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,8 +24,8 @@ public class RegistrationController {
     }
 
     @PostMapping(value = "/registration")
-    public Long signUp(@Valid @RequestBody RegistrationDto user) {
-        return registrationService.register(user);
+    public ResponseEntity<Long> signUp(@Valid @RequestBody RegistrationDto user) {
+        return new ResponseEntity(registrationService.register(user), HttpStatus.CREATED);
     }
 
     @GetMapping(value = "/ping")
