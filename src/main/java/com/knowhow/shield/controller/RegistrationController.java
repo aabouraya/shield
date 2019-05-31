@@ -28,13 +28,8 @@ public class RegistrationController {
         return new ResponseEntity(registrationService.register(user), HttpStatus.CREATED);
     }
 
-    @GetMapping(value = "/ping")
-    public String ping() {
-        return "is live";
-    }
-
-    @PostMapping(value = "/activation/{token}")
-    public void activate(@PathVariable String token) {
-        activationService.activateUser(token);
+    @GetMapping(value = "/activation/{token}")
+    public ResponseEntity<Long> activate(@PathVariable String token) {
+        return new ResponseEntity(activationService.activateUser(token), HttpStatus.OK);
     }
 }

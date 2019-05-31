@@ -6,5 +6,5 @@ public interface ActivationService {
 
     void sendActivationEmail(User user);
 
-    void activateUser(String token);
+    Long activateUser(String token);
 }

@@ -30,11 +30,12 @@ public class ActivationServiceImpl implements ActivationService {
 
     @Override
     @Transactional
-    public void activateUser(String token) {
+    public Long activateUser(String token) {
         User user = verificationTokenService.findUserByToken(token);
         user.setEnabled(true);
         userRepository.save(user);
         verificationTokenService.deactivateToken(token);
+        return user.getId();
     }
 
 }

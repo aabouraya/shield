@@ -4,10 +4,12 @@ package com.knowhow.shield.controller;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.knowhow.shield.dto.RegistrationDto;
+import com.knowhow.shield.service.ActivationService;
 import com.knowhow.shield.service.RegistrationService;
 import org.junit.Before;
 import org.junit.Test;
@@ -29,6 +31,9 @@ public class RegistrationControllerTest {
 
     @Mock
     private RegistrationService registrationService;
+
+    @Mock
+    private ActivationService activationService;
 
     @InjectMocks
     private RegistrationController registrationController;
@@ -54,5 +59,18 @@ public class RegistrationControllerTest {
         //Assert
         assertThat(response.getStatus()).isEqualTo(HttpStatus.CREATED.value());
         assertThat(response.getContentAsString()).isEqualTo("1");
+    }
+
+    @Test
+    public void givenValidActivationTokenExpectUserId() throws Exception {
+        //Arrange
+        doReturn(30L).when(activationService).activateUser("1234");
+
+        //Act
+        MockHttpServletResponse response = mvc.perform(get("/activation/1234")).andReturn().getResponse();
+
+        //Assert
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        assertThat(response.getContentAsString()).isEqualTo("30");
     }
 }
