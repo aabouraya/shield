@@ -5,6 +5,7 @@ import com.knowhow.shield.service.UserService;
 import javax.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,12 +29,13 @@ public class UserController {
     }
 
     @PutMapping("/users/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateUser(@PathVariable Long id, @Valid @RequestBody UserDto user) {
         userService.updateUser(id, user);
     }
 
     @DeleteMapping("/users/{id}")
-    @ResponseStatus
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
     }
