@@ -10,7 +10,7 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 
 @Service
-public class VerificationTokenServiceImpl implements VerificationTokenService {
+class VerificationTokenServiceImpl implements VerificationTokenService {
 
     private VerificationTokenRepository verificationTokenRepository;
 

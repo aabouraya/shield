@@ -9,7 +9,7 @@ import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ActivationServiceImpl implements ActivationService {
+class ActivationServiceImpl implements ActivationService {
 
     private VerificationTokenService verificationTokenService;
     private EmailService emailService;

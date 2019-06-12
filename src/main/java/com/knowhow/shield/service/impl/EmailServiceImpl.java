@@ -8,7 +8,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 @Service
-public class EmailServiceImpl implements EmailService {
+class EmailServiceImpl implements EmailService {
 
     private static final String ACTIVATION_MAIL_SUBJECT = "Activation Code";
     private AppProperties appProperties;

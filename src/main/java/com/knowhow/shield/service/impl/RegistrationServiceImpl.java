@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 
 
 @Service
-public class RegistrationServiceImpl implements RegistrationService {
+class RegistrationServiceImpl implements RegistrationService {
 
     private UserRepository userRepository;
     private PasswordEncoder passwordEncoder;
@@ -30,7 +30,9 @@ public class RegistrationServiceImpl implements RegistrationService {
     @Override
     public Long register(RegistrationDto registrationDto) {
         userRepository.findByEmail(registrationDto.getEmail());
-        //       User user = modelMapper.map(registrationDto, User.class);
+//        modelMapper.createTypeMap(RegistrationDto.class, User.class)
+//                .addMapping(RegistrationDto::getPassword,User::setPassword);
+//        User user = modelMapper.map(registrationDto, User.class);
         User user = new User();
         user.setEmail(registrationDto.getEmail());
         user.setFirstName(registrationDto.getFirstName());
