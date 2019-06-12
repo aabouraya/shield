@@ -8,7 +8,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 
 @Configuration
-public class EmailConfig {
+class EmailConfig {
 
     @Value("${spring.mail.host}")
     private String host;
@@ -36,8 +36,7 @@ public class EmailConfig {
     @Bean
     public SimpleMailMessage activationMessage() {
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setText(
-                "Hi %s,\n please click in this link :\n %s/%s\n to activate your account. \n Thanks you");
+        message.setText("Hi %s,\n please click in this link :\n %s/%s\n to activate your account. \n Thanks you");
         return message;
     }
 }

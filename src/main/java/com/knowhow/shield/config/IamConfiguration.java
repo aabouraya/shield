@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 
 @Configuration
-public class IamConfiguration {
+class IamConfiguration {
 
     private DataSource dataSource;
 

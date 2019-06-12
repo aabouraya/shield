@@ -13,7 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private UserDetailsService userDetailsService;
 
@@ -33,16 +33,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
-                .csrf().disable()
-                .authorizeRequests()
-                .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+        http.csrf().disable().authorizeRequests().antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .antMatchers("/webjars/**", "/v2/**", "/swagger-ui.html", "/swagger-resources/**").permitAll()
-                .antMatchers("/registration").permitAll()
-                .antMatchers("/activation/**").permitAll()
-           //     .antMatchers("/users/**").permitAll()
-                .anyRequest().authenticated()
-                .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and().httpBasic();
+                .antMatchers("/registration").permitAll().antMatchers("/activation/**").permitAll()
+                //     .antMatchers("/users/**").permitAll()
+                .anyRequest().authenticated().and().sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().httpBasic();
     }
 }
