@@ -1,6 +1,8 @@
 package com.knowhow.shield.service.impl;
 
+import com.knowhow.shield.Exception.UserIsAlreadyExistException;
 import com.knowhow.shield.Exception.UserNotFoundException;
+import com.knowhow.shield.dto.RegistrationDto;
 import com.knowhow.shield.dto.UserDto;
 import com.knowhow.shield.model.User;
 import com.knowhow.shield.repository.UserRepository;
@@ -10,17 +12,20 @@ import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
+    private PasswordEncoder passwordEncoder;
     private ModelMapper modelMapper;
 
-    UserServiceImpl(UserRepository userRepository, ModelMapper modelMapper) {
+    UserServiceImpl(UserRepository userRepository, ModelMapper modelMapper, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.modelMapper = modelMapper;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -41,5 +46,23 @@ class UserServiceImpl implements UserService {
         User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id.toString()));
         modelMapper.map(userDto, user);
         userRepository.save(user);
+    }
+
+    @Override
+    public User createUser(RegistrationDto registrationDto) {
+        if (userRepository.findByEmail(registrationDto.getEmail()).isPresent()) {
+            throw new UserIsAlreadyExistException(registrationDto.getEmail());
+        }
+
+        //        modelMapper.createTypeMap(RegistrationDto.class, User.class)
+//                .addMapping(RegistrationDto::getPassword, User::setPassword);
+//        User user = modelMapper.map(registrationDto, User.class);
+        User user = new User();
+        user.setEmail(registrationDto.getEmail());
+        user.setFirstName(registrationDto.getFirstName());
+        user.setLastName(registrationDto.getLastName());
+        user.setPassword(passwordEncoder.encode(registrationDto.getPassword()));
+        user.setEnabled(false);
+        return userRepository.save(user);
     }
 }

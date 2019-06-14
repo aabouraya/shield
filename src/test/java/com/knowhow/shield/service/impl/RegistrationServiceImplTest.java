@@ -1,40 +1,54 @@
 package com.knowhow.shield.service.impl;
 
-import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.initMocks;
 
 import com.knowhow.shield.dto.RegistrationDto;
-import com.knowhow.shield.repository.UserRepository;
+import com.knowhow.shield.event.CompleteRegistrationEvent;
+import com.knowhow.shield.model.User;
+import com.knowhow.shield.service.RegistrationService;
+import com.knowhow.shield.service.UserService;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.context.ApplicationEventPublisher;
 
+@RunWith(MockitoJUnitRunner.class)
 public class RegistrationServiceImplTest {
 
     @Mock
-    private UserRepository mockUserRepository;
+    private UserService userService;
 
-    private RegistrationServiceImpl registrationServiceImplUnderTest;
+    @Mock
+    private ApplicationEventPublisher publisher;
+
+    private RegistrationService registrationService;
 
     @Before
     public void setUp() {
-        initMocks(this);
-       // userServiceImplUnderTest = new UserServiceImpl(mockUserRepository);
+        registrationService = new RegistrationServiceImpl(userService, publisher);
     }
 
     @Test
-    public void testCreateUser() {
-        // Setup
-        final RegistrationDto registrationDto = null;
-        final Long expectedResult = 0L;
-        when(mockUserRepository.findByEmail("email")).thenReturn(null);
-        when(mockUserRepository.save(null)).thenReturn(null);
+    public void givenValidRegistrationDtoExpectUserId() {
+        //Arrange
+        RegistrationDto registrationDto = new RegistrationDto("Ahmed", "Aly", "abc123", "abc123", "a.a@gmail.com");
+        User user = mock(User.class);
+        when(userService.createUser(any())).thenReturn(user);
+        doNothing().when(publisher).publishEvent(any(CompleteRegistrationEvent.class));
 
-        // Run the test
-     //   final Long result = userServiceImplUnderTest.register(userDto);
+        //Act
+        registrationService.register(registrationDto);
 
-        // Verify the results
-      //  assertEquals(expectedResult, result);
+        //Assert
+        verify(publisher, times(1)).publishEvent(any(CompleteRegistrationEvent.class));
+        verify(userService, times(1)).createUser(any());
+
     }
 }

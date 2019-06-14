@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 class RegistrationController {
 
-    private RegistrationService registrationService;
-    private ActivationService activationService;
+    private final RegistrationService registrationService;
+    private final ActivationService activationService;
 
     RegistrationController(RegistrationService registrationService, ActivationService activationService) {
         this.activationService = activationService;
