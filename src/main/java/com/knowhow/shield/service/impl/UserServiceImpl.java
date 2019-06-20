@@ -8,7 +8,9 @@ import com.knowhow.shield.model.User;
 import com.knowhow.shield.repository.UserRepository;
 import com.knowhow.shield.service.UserService;
 import java.util.stream.Collectors;
+import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.spi.MappingContext;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -53,10 +55,9 @@ class UserServiceImpl implements UserService {
         if (userRepository.findByEmail(registrationDto.getEmail()).isPresent()) {
             throw new UserIsAlreadyExistException(registrationDto.getEmail());
         }
-
-        //        modelMapper.createTypeMap(RegistrationDto.class, User.class)
-//                .addMapping(RegistrationDto::getPassword, User::setPassword);
+//        modelMapper.addConverter(getUserConvertor(), RegistrationDto.class, User.class);
 //        User user = modelMapper.map(registrationDto, User.class);
+
         User user = new User();
         user.setEmail(registrationDto.getEmail());
         user.setFirstName(registrationDto.getFirstName());
@@ -64,5 +65,20 @@ class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(registrationDto.getPassword()));
         user.setEnabled(false);
         return userRepository.save(user);
+    }
+
+    private Converter getUserConvertor() {
+        Converter<RegistrationDto, User> myConverter = new Converter<RegistrationDto, User>() {
+            public User convert(MappingContext<RegistrationDto, User> context) {
+                RegistrationDto s = context.getSource();
+                User d = context.getDestination();
+                d.setFirstName(s.getFirstName());
+                d.setLastName(s.getLastName());
+                d.setPassword(passwordEncoder.encode(s.getPassword()));
+                d.setEnabled(false);
+                return d;
+            }
+        };
+        return myConverter;
     }
 }
