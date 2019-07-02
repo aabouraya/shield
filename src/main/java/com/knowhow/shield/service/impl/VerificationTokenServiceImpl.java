@@ -5,6 +5,7 @@ import com.knowhow.shield.model.User;
 import com.knowhow.shield.model.VerificationToken;
 import com.knowhow.shield.repository.VerificationTokenRepository;
 import com.knowhow.shield.service.VerificationTokenService;
+import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.UUID;
 import org.springframework.stereotype.Service;
@@ -13,15 +14,17 @@ import org.springframework.stereotype.Service;
 class VerificationTokenServiceImpl implements VerificationTokenService {
 
     private VerificationTokenRepository verificationTokenRepository;
+    private Clock clock;
 
-    VerificationTokenServiceImpl(VerificationTokenRepository verificationTokenRepository) {
+    VerificationTokenServiceImpl(Clock clock, VerificationTokenRepository verificationTokenRepository) {
+        this.clock = clock;
         this.verificationTokenRepository = verificationTokenRepository;
     }
 
     @Override
     public String createVerificationToken(User user) {
         VerificationToken verificationToken = new VerificationToken(user, UUID.randomUUID().toString(),
-                LocalDateTime.now().plusHours(24), true);
+                LocalDateTime.now(clock).plusHours(24), true);
         verificationTokenRepository.save(verificationToken);
         return verificationToken.getToken();
     }
@@ -31,7 +34,7 @@ class VerificationTokenServiceImpl implements VerificationTokenService {
         VerificationToken verificationToken = verificationTokenRepository.findByTokenAndActiveTrue(token).orElseThrow(
                 () -> new VerificationTokeIsNotValidException(String.format("this token: %s is invalid", token)));
 
-        if (LocalDateTime.now().isAfter(verificationToken.getExpiryDate())) {
+        if (LocalDateTime.now(clock).isAfter(verificationToken.getExpiryDate())) {
             throw new VerificationTokeIsNotValidException(String.format("this token: %s is expired", token));
         }
         return verificationToken.getUser();

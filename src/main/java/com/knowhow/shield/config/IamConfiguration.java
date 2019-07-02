@@ -1,5 +1,6 @@
 package com.knowhow.shield.config;
 
+import java.time.Clock;
 import javax.sql.DataSource;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
@@ -23,6 +24,11 @@ class IamConfiguration {
     @Bean
     public ModelMapper modelMapper() {
         return new ModelMapper();
+    }
+
+    @Bean
+    public Clock clock() {
+        return Clock.systemDefaultZone();
     }
 }
 

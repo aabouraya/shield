@@ -55,6 +55,7 @@ class UserServiceImpl implements UserService {
         if (userRepository.findByEmail(registrationDto.getEmail()).isPresent()) {
             throw new UserIsAlreadyExistException(registrationDto.getEmail());
         }
+        //todo use modelMapper to create user using getUserConvertor() function
 //        modelMapper.addConverter(getUserConvertor(), RegistrationDto.class, User.class);
 //        User user = modelMapper.map(registrationDto, User.class);
 
