@@ -1,9 +1,12 @@
 plugins {
     id 'org.springframework.boot' version '2.1.4.RELEASE'
     id 'java'
+    id "net.ltgt.apt" version "0.20"
 //    id 'jacoco'
 }
 apply plugin: 'io.spring.dependency-management'
+apply plugin: 'net.ltgt.apt-idea'
+apply plugin: 'net.ltgt.apt-eclipse'
 
 group = 'com.knowhow'
 version = '0.0.1-SNAPSHOT'
@@ -28,12 +31,15 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-mail'
     compileOnly 'org.springframework.boot:spring-boot-configuration-processor'
     compileOnly 'org.projectlombok:lombok'
-    compile(group: 'org.flywaydb', name:'flyway-core')
+    annotationProcessor(group: 'org.mapstruct', name: 'mapstruct-processor', version: mapstruct_version)
+    compile(group: 'org.flywaydb', name: 'flyway-core')
     compile(group: 'io.springfox', name: 'springfox-swagger-ui', version: swagger_version)
     compile(group: 'io.springfox', name: 'springfox-swagger2', version: swagger_version)
+    compile(group: 'org.mapstruct', name: 'mapstruct-jdk8', version: mapstruct_version)
+
     runtimeOnly 'org.springframework.boot:spring-boot-devtools'
     runtimeOnly 'mysql:mysql-connector-java'
-    runtimeOnly (group: 'com.h2database',name:'h2', version :h2_version)
+    runtimeOnly(group: 'com.h2database', name: 'h2', version: h2_version)
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'

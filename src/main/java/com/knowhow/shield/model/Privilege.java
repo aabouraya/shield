@@ -8,6 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,6 +16,7 @@ import lombok.Setter;
 @Table(name = "privileges")
 @Getter
 @Setter
+@EqualsAndHashCode
 public class Privilege {
 
     @Id
@@ -24,6 +26,7 @@ public class Privilege {
     @Column(name = "name", nullable = false)
     private String name;
 
+    @EqualsAndHashCode.Exclude
     @ManyToMany(mappedBy = "privileges")
     private List<Role> roles;
 }

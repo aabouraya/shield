@@ -4,27 +4,25 @@ import com.knowhow.shield.Exception.UserIsAlreadyExistException;
 import com.knowhow.shield.Exception.UserNotFoundException;
 import com.knowhow.shield.dto.RegistrationDto;
 import com.knowhow.shield.dto.UserDto;
+import com.knowhow.shield.mapping.UserMapper;
 import com.knowhow.shield.model.User;
 import com.knowhow.shield.repository.UserRepository;
 import com.knowhow.shield.service.UserService;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 class UserServiceImpl implements UserService {
 
-    private UserRepository userRepository;
-    private PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
+    private final UserMapper userMapper;
 
-    UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
 
     @Override
     public void deleteUser(UUID id) {
@@ -36,15 +34,15 @@ class UserServiceImpl implements UserService {
     public Page<UserDto> getUsers(Pageable pageable) {
         Page<User> usersPage = userRepository.findAll(pageable);
 
-        return new PageImpl<>(usersPage.getContent().stream().map(user -> new UserDto()).collect(Collectors.toList()),
+        return new PageImpl<>(
+                usersPage.getContent().stream().map(user -> userMapper.toDto(user)).collect(Collectors.toList()),
                 pageable, usersPage.getTotalElements());
     }
 
     @Override
     public void updateUser(UUID id, UserDto userDto) {
         User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id.toString()));
-        //  modelMapper.map(userDto, user);
-
+        userMapper.updateFromDto(userDto, user);
         userRepository.save(user);
     }
 
@@ -53,6 +51,7 @@ class UserServiceImpl implements UserService {
         if (userRepository.findByEmail(registrationDto.getEmail()).isPresent()) {
             throw new UserIsAlreadyExistException(registrationDto.getEmail());
         }
+
         User user = new User();
         user.setEmail(registrationDto.getEmail());
         user.setFirstName(registrationDto.getFirstName());
