@@ -5,6 +5,7 @@ import com.knowhow.shield.repository.UserRepository;
 import com.knowhow.shield.service.ActivationService;
 import com.knowhow.shield.service.EmailService;
 import com.knowhow.shield.service.VerificationTokenService;
+import java.util.UUID;
 import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +31,7 @@ class ActivationServiceImpl implements ActivationService {
 
     @Override
     @Transactional
-    public Long activateUser(String token) {
+    public UUID activateUser(String token) {
         User user = verificationTokenService.findUserByToken(token);
         user.setEnabled(true);
         userRepository.save(user);

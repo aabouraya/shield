@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.knowhow.shield.dto.RegistrationDto;
 import com.knowhow.shield.service.ActivationService;
 import com.knowhow.shield.service.RegistrationService;
+import java.util.UUID;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -49,8 +50,9 @@ public class RegistrationControllerTest {
     @Test
     public void givenRegistrationExpectUserId() throws Exception {
         //Arrange
+        UUID id = UUID.randomUUID();
         RegistrationDto registrationDto = new RegistrationDto("ahmed", "abc", "abc123", "abc123", "abc123@mail.com");
-        doReturn(1L).when(registrationService).register(any());
+        doReturn(id).when(registrationService).register(any());
 
         //Act
         MockHttpServletResponse response = mvc.perform(post("/registration").contentType(MediaType.APPLICATION_JSON)
@@ -58,19 +60,20 @@ public class RegistrationControllerTest {
 
         //Assert
         assertThat(response.getStatus()).isEqualTo(HttpStatus.CREATED.value());
-        assertThat(response.getContentAsString()).isEqualTo("1");
+        assertThat(response.getContentAsString()).contains(id.toString());
     }
 
     @Test
     public void givenValidActivationTokenExpectUserId() throws Exception {
         //Arrange
-        doReturn(30L).when(activationService).activateUser("1234");
+        UUID id = UUID.randomUUID();
+        doReturn(id).when(activationService).activateUser("1234");
 
         //Act
         MockHttpServletResponse response = mvc.perform(get("/activation/1234")).andReturn().getResponse();
 
         //Assert
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
-        assertThat(response.getContentAsString()).isEqualTo("30");
+        assertThat(response.getContentAsString()).contains(id.toString());
     }
 }

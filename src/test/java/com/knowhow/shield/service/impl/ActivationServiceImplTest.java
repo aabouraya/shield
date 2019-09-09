@@ -15,6 +15,7 @@ import com.knowhow.shield.repository.UserRepository;
 import com.knowhow.shield.service.ActivationService;
 import com.knowhow.shield.service.EmailService;
 import com.knowhow.shield.service.VerificationTokenService;
+import java.util.UUID;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -59,16 +60,17 @@ public class ActivationServiceImplTest {
     public void givenValidTokenExpectUserId() {
         //Arrange
         User user = mock(User.class);
-        when(user.getId()).thenReturn(1L);
+        UUID id = UUID.randomUUID();
+        when(user.getId()).thenReturn(id);
         when(verificationTokenService.findUserByToken("1234")).thenReturn(user);
         when(userRepository.save(user)).thenReturn(user);
         doNothing().when(verificationTokenService).deactivateToken("1234");
 
         //Act
-        long result = activationService.activateUser("1234");
+        UUID result = activationService.activateUser("1234");
 
         //Assert
-        assertThat(result).isEqualTo(1L);
+        assertThat(result).isEqualTo(id);
         verify(userRepository, times(1)).save(user);
         verify(user, times(1)).setEnabled(true);
         verify(verificationTokenService, times(1)).deactivateToken("1234");

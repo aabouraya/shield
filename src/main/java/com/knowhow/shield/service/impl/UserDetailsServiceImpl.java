@@ -5,7 +5,6 @@ import com.knowhow.shield.model.Privilege;
 import com.knowhow.shield.model.Role;
 import com.knowhow.shield.model.User;
 import com.knowhow.shield.repository.UserRepository;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -21,7 +20,6 @@ class UserDetailsServiceImpl implements UserDetailsService {
 
     private UserRepository userRepository;
 
-
     UserDetailsServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
@@ -29,13 +27,13 @@ class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) {
         User user = userRepository.findByEmail(username).orElseThrow(() -> new UsernameNotFoundException(username));
-        // return modelMapper.map(user, UserDetailsDto.class);
+        //  modelMapper.typeMap( )
+        //  return modelMapper.map(user, UserDetailsDto.class);
         return new UserDetailsDto(user);
     }
 
     private Collection<? extends GrantedAuthority> getAuthorities(Collection<Role> roles) {
-        List<String> priv = getPrivileges(roles);
-        return getGrantedAuthorities(priv);
+        return getGrantedAuthorities(getPrivileges(roles));
     }
 
     private List<String> getPrivileges(Collection<Role> roles) {

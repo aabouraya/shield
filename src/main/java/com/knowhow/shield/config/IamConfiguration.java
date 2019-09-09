@@ -2,7 +2,6 @@ package com.knowhow.shield.config;
 
 import java.time.Clock;
 import javax.sql.DataSource;
-import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
@@ -19,11 +18,6 @@ class IamConfiguration {
     @Bean
     public JdbcUserDetailsManager jdbcUserDetailsManager() {
         return new JdbcUserDetailsManager(dataSource);
-    }
-
-    @Bean
-    public ModelMapper modelMapper() {
-        return new ModelMapper();
     }
 
     @Bean

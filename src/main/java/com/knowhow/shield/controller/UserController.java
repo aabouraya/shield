@@ -2,6 +2,7 @@ package com.knowhow.shield.controller;
 
 import com.knowhow.shield.dto.UserDto;
 import com.knowhow.shield.service.UserService;
+import java.util.UUID;
 import javax.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -30,13 +31,13 @@ class UserController {
 
     @PutMapping("/users/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateUser(@PathVariable Long id, @Valid @RequestBody UserDto user) {
+    public void updateUser(@PathVariable UUID id, @Valid @RequestBody UserDto user) {
         userService.updateUser(id, user);
     }
 
     @DeleteMapping("/users/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteUser(@PathVariable Long id) {
+    public void deleteUser(@PathVariable UUID id) {
         userService.deleteUser(id);
     }
 }

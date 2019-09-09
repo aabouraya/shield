@@ -47,6 +47,4 @@ class VerificationTokenServiceImpl implements VerificationTokenService {
         verificationToken.setActive(false);
         verificationTokenRepository.save(verificationToken);
     }
-
-
 }

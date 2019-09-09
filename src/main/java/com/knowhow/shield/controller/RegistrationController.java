@@ -3,6 +3,7 @@ package com.knowhow.shield.controller;
 import com.knowhow.shield.dto.RegistrationDto;
 import com.knowhow.shield.service.ActivationService;
 import com.knowhow.shield.service.RegistrationService;
+import java.util.UUID;
 import javax.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +30,7 @@ class RegistrationController {
     }
 
     @GetMapping(value = "/activation/{token}")
-    public ResponseEntity<Long> activate(@PathVariable String token) {
+    public ResponseEntity<UUID> activate(@PathVariable String token) {
         return new ResponseEntity(activationService.activateUser(token), HttpStatus.OK);
     }
 }

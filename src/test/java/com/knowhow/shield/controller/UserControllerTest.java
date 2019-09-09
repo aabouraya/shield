@@ -3,7 +3,6 @@ package com.knowhow.shield.controller;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
@@ -19,6 +18,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.knowhow.shield.dto.UserDto;
 import com.knowhow.shield.service.UserService;
 import java.util.Arrays;
+import java.util.UUID;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -47,11 +47,12 @@ public class UserControllerTest {
     private MockMvc mvc;
 
     private JacksonTester<UserDto> jacksonTester;
-
+    private UUID id;
     @Before
     public void init() {
         mvc = MockMvcBuilders.standaloneSetup(userController)
                 .setCustomArgumentResolvers(new PageableHandlerMethodArgumentResolver()).build();
+        id = UUID.randomUUID();
     }
 
     @Test
@@ -75,17 +76,17 @@ public class UserControllerTest {
     public void givenUserDataExpectUpdateUser() throws Exception {
         //Arrange
         UserDto user = new UserDto("mark", "alex", "mark.alex@mail.com", true);
-        doNothing().when(userService).updateUser(anyLong(), any(UserDto.class));
+        doNothing().when(userService).updateUser(any(), any(UserDto.class));
         JacksonTester.initFields(this, new ObjectMapper());
         ArgumentCaptor<UserDto> userCapture = ArgumentCaptor.forClass(UserDto.class);
 
         //Act
-        ResultActions result = mvc.perform(put("/users/1").contentType(MediaType.APPLICATION_JSON_UTF8)
+        ResultActions result = mvc.perform(put("/users/{id}", id).contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(jacksonTester.write(user).getJson()));
 
         //Assert
         result.andExpect(status().isNoContent());
-        verify(userService, times(1)).updateUser(eq(1L), userCapture.capture());
+        verify(userService, times(1)).updateUser(eq(id), userCapture.capture());
         assertThat(userCapture.getValue().getFirstName()).isEqualTo("mark");
         assertThat(userCapture.getValue().getLastName()).isEqualTo("alex");
         assertThat(userCapture.getValue().getEmail()).isEqualTo("mark.alex@mail.com");
@@ -95,13 +96,13 @@ public class UserControllerTest {
     @Test
     public void givenUserIdExpectDeleteUser() throws Exception {
         //Arrange
-        doNothing().when(userService).deleteUser(1L);
+        doNothing().when(userService).deleteUser(id);
 
         //Act
-        ResultActions result = mvc.perform(delete("/users/1"));
+        ResultActions result = mvc.perform(delete("/users/{id}", id));
 
         //Assert
         result.andExpect(status().isNoContent());
-        verify(userService, times(1)).deleteUser(1L);
+        verify(userService, times(1)).deleteUser(id);
     }
 }
