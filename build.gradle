@@ -29,6 +29,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-mail'
+
+    compile(group: 'org.springframework.cloud', name: 'spring-cloud-starter-stream-rabbit', version: spring_stream_version)
     compileOnly 'org.springframework.boot:spring-boot-configuration-processor'
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor(group: 'org.mapstruct', name: 'mapstruct-processor', version: mapstruct_version)
@@ -43,6 +45,7 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
+    testImplementation(group: 'org.springframework.cloud', name: 'spring-cloud-stream-test-support', version: spring_stream_version)
 }
 
 //jacocoTestReport {

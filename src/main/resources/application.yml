@@ -23,6 +23,18 @@ spring:
       ddl-auto: update
     database: h2
 
+  cloud:
+    stream:
+      bindings:
+        output:
+          destination: emails
+          group: mails-group
+        input:
+          destination: emails
+          group: mails-group
+
+
+
 server:
   port: 9090
 iam:
@@ -34,7 +46,6 @@ logging:
     org:
       hibernate:
         SQL: debug
-
 
 
   #  datasource:
