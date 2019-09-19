@@ -5,11 +5,12 @@ import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @Getter
-@ConfigurationProperties(prefix = "iam", ignoreUnknownFields = false)
+@ConfigurationProperties(prefix = "shield", ignoreUnknownFields = false)
 public class AppProperties {
 
     private final Swagger swagger = new Swagger();
     private final App app = new App();
+    private final Jwt jwt = new Jwt();
 
     @Getter
     @Setter
@@ -31,5 +32,15 @@ public class AppProperties {
     public static class App {
 
         private String activationDomainUrl;
+    }
+
+    @Getter
+    @Setter
+    static class Jwt {
+
+        private String keyStore;
+        private String keyStorePassword;
+        private String keyPairAlias;
+        private String keyPairPassword;
     }
 }
