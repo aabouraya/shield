@@ -39,10 +39,10 @@ server:
   port: 9090
 shield:
   jwt:
-    key-store: "classpath:keystore.jks"
-    key-store-password: "letmein"
-    key-pair-alias: "mytestkey"
-    key-pair-password: "changeme"
+    key-store: "classpath:shield.jks"
+    key-store-password: "not4public"
+    key-pair-alias: "shield"
+    key-pair-password: "not4public"
   app:
     activationDomainUrl: http://localhost:9090/activation
 
