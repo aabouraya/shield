@@ -94,13 +94,18 @@ CREATE TABLE IF NOT EXISTS oauth_code
     code           VARCHAR(256),
     authentication BLOB
 );
+--
+-- INSERT INTO users (id, email, enabled, first_name, last_name, password, token_expired, id)
+-- VALUES (1, 'admin@shild.com', true, 'admin', 'ad', '$2a$10$rq6wC6tqbqoZtx3r9aLx1Op8dXZlS88hNxIX/JBx0.YevQkTI4zae',
+--         false, '21ae7719e3f64465ba7ed66cfec9fa90');
 
 INSERT INTO users (email, enabled, first_name, last_name, password, token_expired, id)
-VALUES ('admin@shild.com', true, 'admin', 'ad', '$2a$10$rq6wC6tqbqoZtx3r9aLx1Op8dXZlS88hNxIX/JBx0.YevQkTI4zae',
+VALUES ('user@shild.com', true, 'user', 'again', '{bcrypt}$2a$10$cyf5NfobcruKQ8XGjUJkEegr9ZWFqaea6vjpXWEaSqTa2xL9wjgQC',
         false, '21ae7719e3f64465ba7ed66cfec9fa90');
 
 INSERT INTO oauth_client_details (client_id, client_secret, scope, authorized_grant_types, authorities,
                                   access_token_validity)
+
 VALUES ('clientId', '{bcrypt}$2a$10$vCXMWCn7fDZWOcLnIEhmK.74dvK1Eh8ae2WrWlhr2ETPLoxQctN4.', 'read,write',
         'password,refresh_token,client_credentials', 'ROLE_CLIENT', 300);
 

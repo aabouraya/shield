@@ -31,7 +31,7 @@ public class EmailServiceImplTest {
 
     @Before
     public void init() {
-        emailService = new EmailServiceImpl(appProperties, mailSender, simpleMailMessage, emailChannel);
+        emailService = null;//new EmailServiceImpl(appProperties, mailSender, simpleMailMessage, emailChannel);
     }
 
     @Test
