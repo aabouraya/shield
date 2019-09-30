@@ -1,5 +1,6 @@
 plugins {
-    id 'org.springframework.boot' version '2.1.4.RELEASE'
+    id 'org.springframework.boot' version '2.1.8.RELEASE'
+//    id 'io.spring.dependency-management' version '1.0.8.RELEASE'
     id 'java'
     id "net.ltgt.apt" version "0.20"
 //    id 'jacoco'
@@ -17,6 +18,10 @@ configurations {
     }
 }
 
+ext {
+    set('springCloudVersion', "Greenwich.SR3")
+}
+
 repositories {
     mavenCentral()
 }
@@ -30,9 +35,10 @@ dependencies {
 
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-mail'
-
+    implementation 'org.springframework.cloud:spring-cloud-stream'
+    implementation 'org.springframework.cloud:spring-cloud-stream-binder-rabbit'
     compile group: 'org.springframework.security.oauth.boot', name: 'spring-security-oauth2-autoconfigure', version: oauth2_version
-    compile(group: 'org.springframework.cloud', name: 'spring-cloud-starter-stream-rabbit', version: spring_stream_version)
+//    compile(group: 'org.springframework.cloud', name: 'spring-cloud-starter-stream-rabbit', version: spring_stream_version)
     compileOnly 'org.springframework.boot:spring-boot-configuration-processor'
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor(group: 'org.mapstruct', name: 'mapstruct-processor', version: mapstruct_version)
@@ -47,7 +53,14 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
+    testImplementation 'org.springframework.cloud:spring-cloud-stream-test-support'
     testImplementation(group: 'org.springframework.cloud', name: 'spring-cloud-stream-test-support', version: spring_stream_version)
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
 }
 
 //jacocoTestReport {

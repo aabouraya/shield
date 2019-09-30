@@ -19,18 +19,18 @@ class EmailServiceImpl implements EmailService {
     private final AppProperties appProperties;
     private final JavaMailSender mailSender;
     private final SimpleMailMessage activationMessage;
-    // private final EmailChannel emailChannel;
     private final Source source;
-    //  private final Sink sink;
+
 
     @Override
-    @SendTo
+    @SendTo(Source.OUTPUT)
     public ActivationMessageDto sendActivationEmail(User user, String token) {
-        // ActivationMessageDto message =
+//        ActivationMessageDto message =
         return new ActivationMessageDto(ACTIVATION_MAIL_SUBJECT, user.getEmail(),
                 String.format(activationMessage.getText(), user.getFirstName(),
                         appProperties.getApp().getActivationDomainUrl(), token));
-        //    source.output().send((MessageBuilder.withPayload(message).build()));
+//        source.output().send((MessageBuilder.withPayload(message).build()));
+//        return message;
     }
 
 //    @Override

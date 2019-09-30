@@ -4,6 +4,7 @@ import com.knowhow.shield.Exception.UserIsAlreadyExistException;
 import com.knowhow.shield.Exception.UserNotFoundException;
 import com.knowhow.shield.dto.RegistrationDto;
 import com.knowhow.shield.dto.UserDto;
+import com.knowhow.shield.mapping.RegistrationMapper;
 import com.knowhow.shield.mapping.UserMapper;
 import com.knowhow.shield.model.User;
 import com.knowhow.shield.repository.UserRepository;
@@ -22,7 +23,7 @@ class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
-
+    private final RegistrationMapper registrationMapper;
 
     @Override
     public void deleteUser(UUID id) {
@@ -51,15 +52,7 @@ class UserServiceImpl implements UserService {
         if (userRepository.findByEmail(registrationDto.getEmail()).isPresent()) {
             throw new UserIsAlreadyExistException(registrationDto.getEmail());
         }
-
-        User user = new User();
-        user.setEmail(registrationDto.getEmail());
-        user.setFirstName(registrationDto.getFirstName());
-        user.setLastName(registrationDto.getLastName());
-        user.setPassword(registrationDto.getPassword());
-        user.setEnabled(false);
+        User user = registrationMapper.toUser(registrationDto);
         return userRepository.save(user);
     }
-
-
 }
