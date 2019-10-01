@@ -11,6 +11,7 @@ import com.knowhow.shield.Exception.UserIsAlreadyExistException;
 import com.knowhow.shield.Exception.UserNotFoundException;
 import com.knowhow.shield.dto.RegistrationDto;
 import com.knowhow.shield.dto.UserDto;
+import com.knowhow.shield.mapping.RegistrationMapper;
 import com.knowhow.shield.mapping.UserMapper;
 import com.knowhow.shield.model.User;
 import com.knowhow.shield.repository.UserRepository;
@@ -36,7 +37,10 @@ public class UserServiceImplTest {
     private UserRepository userRepository;
 
     @Mock
-    private UserMapper mapper;
+    private UserMapper userMapper;
+
+    @Mock
+    private RegistrationMapper registrationMapper;
 
     @Rule
     public final ExpectedException exception = ExpectedException.none();
@@ -47,7 +51,7 @@ public class UserServiceImplTest {
 
     @Before
     public void init() {
-        userService = new UserServiceImpl(userRepository, mapper);
+        userService = new UserServiceImpl(userRepository, userMapper, registrationMapper);
         id = UUID.randomUUID();
     }
 
@@ -84,13 +88,13 @@ public class UserServiceImplTest {
         UserDto dto = mock(UserDto.class);
         User user = mock(User.class);
         when(userRepository.findById(id)).thenReturn(Optional.of(user));
-        doNothing().when(mapper).updateFromDto(any(UserDto.class), any(User.class));
+        doNothing().when(userMapper).updateFromDto(any(UserDto.class), any(User.class));
 
         //Act
         userService.updateUser(id, dto);
 
         //Assert
-        verify(mapper).updateFromDto(dto, user);
+        verify(userMapper).updateFromDto(dto, user);
         verify(userRepository).save(user);
     }
 
@@ -114,12 +118,13 @@ public class UserServiceImplTest {
         RegistrationDto dto = mock(RegistrationDto.class);
         User user = mock(User.class);
         when(userRepository.save(any(User.class))).thenReturn(user);
+        when(registrationMapper.toUser(any())).thenReturn(user);
 
         //Act
         User result = userService.createUser(dto);
 
         //Assert
-        assertThat(result).isEqualTo(user);
+        verify(userRepository).save(result);
     }
 
     @Test
@@ -143,7 +148,7 @@ public class UserServiceImplTest {
         User user = mock(User.class);
         UserDto dto = mock(UserDto.class);
         when(userRepository.findAll(pageable)).thenReturn(new PageImpl(Arrays.asList(user)));
-        when(mapper.toDto(user)).thenReturn(dto);
+        when(userMapper.toDto(user)).thenReturn(dto);
 
         //Act
         Page<UserDto> result = userService.getUsers(pageable);

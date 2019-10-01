@@ -46,7 +46,7 @@ public class ActivationServiceImplTest {
         //Arrange
         User user = mock(User.class);
         doReturn("123456789").when(verificationTokenService).createVerificationToken(any(User.class));
-        doNothing().when(emailService).sendActivationEmail(any(User.class), anyString());
+        // doNothing().when(emailService).sendActivationEmail(any(User.class), anyString());
 
         //Act
         activationService.sendActivationEmail(user);

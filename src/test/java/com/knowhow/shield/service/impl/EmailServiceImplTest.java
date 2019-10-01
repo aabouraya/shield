@@ -1,6 +1,5 @@
 package com.knowhow.shield.service.impl;
 
-import com.knowhow.shield.channel.EmailChannel;
 import com.knowhow.shield.config.AppProperties;
 import com.knowhow.shield.service.EmailService;
 import org.junit.Before;
@@ -9,8 +8,8 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.cloud.stream.messaging.Source;
 import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 
 @RunWith(MockitoJUnitRunner.class)
 public class EmailServiceImplTest {
@@ -18,20 +17,18 @@ public class EmailServiceImplTest {
     @Spy
     AppProperties appProperties;
 
-    @Mock
-    JavaMailSender mailSender;
-
-    @Mock
-    EmailChannel emailChannel;
-
     @Spy
     SimpleMailMessage simpleMailMessage;
 
+    @Mock
+    Source source;
+
     EmailService emailService;
+
 
     @Before
     public void init() {
-        emailService = null;//new EmailServiceImpl(appProperties, mailSender, simpleMailMessage, emailChannel);
+        emailService = new EmailServiceImpl(appProperties, simpleMailMessage, source);
     }
 
     @Test
@@ -42,13 +39,17 @@ public class EmailServiceImplTest {
 //        AppProperties.App app = new AppProperties.App();
 //        app.setActivationDomainUrl("http://localhost:8080");
 //        when(appProperties.getApp()).thenReturn(app);
-//        when(simpleMailMessage.getText()).thenReturn("%s %s %s");
+//        MessageChannel channel  = mock(MessageChannel.class);
+//        when(source.output()).thenReturn(channel);
+//        when(channel.send(any())).thenReturn(true);
+//        ActivationMessageDto dto = new ActivationMessageDto("Activation Code","","");
+//
 //        String token = "abc123";
 //
 //        //Act
-//        emailService.sendActivationEmail(user, token);
+//        ActivationMessageDto result =  emailService.sendActivationEmail(user, token);
 //
 //        //Assert
-//       // verify(mailSender, times(1)).send(simpleMailMessage);
+//        verify()
     }
 }

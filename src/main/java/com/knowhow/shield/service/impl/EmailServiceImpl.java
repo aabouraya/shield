@@ -7,8 +7,8 @@ import com.knowhow.shield.service.EmailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cloud.stream.messaging.Source;
 import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,7 +17,6 @@ class EmailServiceImpl implements EmailService {
 
     private static final String ACTIVATION_MAIL_SUBJECT = "Activation Code";
     private final AppProperties appProperties;
-    private final JavaMailSender mailSender;
     private final SimpleMailMessage activationMessage;
     private final Source source;
 
@@ -25,12 +24,11 @@ class EmailServiceImpl implements EmailService {
     @Override
     @SendTo(Source.OUTPUT)
     public ActivationMessageDto sendActivationEmail(User user, String token) {
-//        ActivationMessageDto message =
-        return new ActivationMessageDto(ACTIVATION_MAIL_SUBJECT, user.getEmail(),
+        ActivationMessageDto message = new ActivationMessageDto(ACTIVATION_MAIL_SUBJECT, user.getEmail(),
                 String.format(activationMessage.getText(), user.getFirstName(),
                         appProperties.getApp().getActivationDomainUrl(), token));
-//        source.output().send((MessageBuilder.withPayload(message).build()));
-//        return message;
+        source.output().send((MessageBuilder.withPayload(message).build()));
+        return message;
     }
 
 //    @Override
