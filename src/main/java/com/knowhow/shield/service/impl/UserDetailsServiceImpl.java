@@ -1,6 +1,6 @@
 package com.knowhow.shield.service.impl;
 
-import com.knowhow.shield.dto.UserDetailsDto;
+import com.knowhow.shield.mapping.UserMapper;
 import com.knowhow.shield.model.Privilege;
 import com.knowhow.shield.model.Role;
 import com.knowhow.shield.model.User;
@@ -8,6 +8,7 @@ import com.knowhow.shield.repository.UserRepository;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,20 +17,17 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service(value = "userDetailsService")
+@RequiredArgsConstructor
 class UserDetailsServiceImpl implements UserDetailsService {
 
-    private UserRepository userRepository;
-
-    UserDetailsServiceImpl(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    private final UserRepository userRepository;
+    private final UserMapper userMapper;
 
     @Override
     public UserDetails loadUserByUsername(String username) {
         User user = userRepository.findByEmail(username).orElseThrow(() -> new UsernameNotFoundException(username));
-        //  modelMapper.typeMap( )
-        //  return modelMapper.map(user, UserDetailsDto.class);
-        return new UserDetailsDto(user);
+        return userMapper.toUserDetails(user);
+
     }
 
     private Collection<? extends GrantedAuthority> getAuthorities(Collection<Role> roles) {

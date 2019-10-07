@@ -1,5 +1,6 @@
 package com.knowhow.shield.service.impl;
 
+import com.knowhow.shield.mapping.UserMapper;
 import com.knowhow.shield.repository.UserRepository;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,13 +15,15 @@ public class UserDetailsServiceImplTest {
     @Mock
     UserRepository userRepository;
 
+    @Mock
+    UserMapper userMapper;
 
     UserDetailsService userDetailsService;
 
 
     @Before
     public void init() {
-        userDetailsService = new UserDetailsServiceImpl(userRepository);
+        userDetailsService = new UserDetailsServiceImpl(userRepository, userMapper);
     }
 
     @Test
