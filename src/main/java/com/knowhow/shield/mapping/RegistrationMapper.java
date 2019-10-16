@@ -3,6 +3,7 @@ package com.knowhow.shield.mapping;
 import com.knowhow.shield.dto.RegistrationDto;
 import com.knowhow.shield.model.User;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -12,16 +13,12 @@ public abstract class RegistrationMapper {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Mapping(target = "password", ignore = true)
+    protected abstract User toUserExcludePassword(RegistrationDto registrationDto);
+
     public User toUser(RegistrationDto registrationDto) {
-        User user = new User();
-        user.setEmail(registrationDto.getEmail());
-        user.setFirstName(registrationDto.getFirstName());
-        user.setLastName(registrationDto.getLastName());
+        User user = toUserExcludePassword(registrationDto);
         user.setPassword(passwordEncoder.encode(registrationDto.getPassword()));
-        user.setEnabled(false);
-        user.setAccountNonExpired(true);
-        user.setAccountNonLocked(true);
-        user.setCredentialsNonExpired(true);
         return user;
     }
 }

@@ -13,7 +13,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @EqualsAndHashCode
-public class OauthClientDetails {
+public class OAuthClient {
 
     @Id
     @Column(name = "client_id", nullable = false)
