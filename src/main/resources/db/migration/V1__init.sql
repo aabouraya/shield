@@ -13,13 +13,16 @@ create table roles_privileges
 
 create table users
 (
-    id            binary(16)   not null,
-    email         varchar(255) not null,
-    enabled       boolean      not null,
-    first_name    varchar(255) not null,
-    last_name     varchar(255) not null,
-    password      varchar(255) not null,
-    token_expired boolean      not null,
+    id                      binary(16)   not null,
+    email                   varchar(255) not null,
+    enabled                 boolean      not null,
+    first_name              varchar(255) not null,
+    last_name               varchar(255) not null,
+    password                varchar(255) not null,
+    token_expired           boolean      not null,
+    account_non_expired     boolean      not null,
+    credentials_non_expired boolean      not null,
+    account_non_locked      boolean      not null,
     primary key (id)
 );
 
@@ -99,8 +102,10 @@ CREATE TABLE IF NOT EXISTS oauth_code
 -- VALUES (1, 'admin@shild.com', true, 'admin', 'ad', '$2a$10$rq6wC6tqbqoZtx3r9aLx1Op8dXZlS88hNxIX/JBx0.YevQkTI4zae',
 --         false, '21ae7719e3f64465ba7ed66cfec9fa90');
 
-INSERT INTO users (email, enabled, first_name, last_name, password, token_expired, id)
-VALUES ('user@shild.com', true, 'user', 'again', '{bcrypt}$2a$10$cyf5NfobcruKQ8XGjUJkEegr9ZWFqaea6vjpXWEaSqTa2xL9wjgQC',
+INSERT INTO users (email, enabled, account_non_expired, credentials_non_expired, account_non_locked, first_name,
+                   last_name, password, token_expired, id)
+VALUES ('user@shild.com', true, true, true, true, 'user', 'again',
+        '{bcrypt}$2a$10$cyf5NfobcruKQ8XGjUJkEegr9ZWFqaea6vjpXWEaSqTa2xL9wjgQC',
         false, '21ae7719e3f64465ba7ed66cfec9fa90');
 
 INSERT INTO oauth_client_details (client_id, client_secret, scope, authorized_grant_types, authorities,

@@ -1,5 +1,6 @@
 package com.knowhow.shield.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Set;
 import java.util.UUID;
 import javax.persistence.Column;
@@ -14,6 +15,7 @@ import javax.persistence.Table;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @Table(name = "users")
@@ -37,6 +39,8 @@ public class User {
     private String email;
 
     @Column(name = "password", nullable = false)
+    @ToString.Exclude
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     @Column(name = "enabled", nullable = false)
@@ -44,6 +48,15 @@ public class User {
 
     @Column(name = "token_expired", nullable = false)
     private boolean tokenExpired;
+
+    @Column(name = "account_non_expired", nullable = false)
+    private boolean accountNonExpired;
+
+    @Column(name = "credentials_non_expired", nullable = false)
+    private boolean credentialsNonExpired;
+
+    @Column(name = "account_non_locked", nullable = false)
+    private boolean accountNonLocked;
 
     @EqualsAndHashCode.Exclude
     @ManyToMany

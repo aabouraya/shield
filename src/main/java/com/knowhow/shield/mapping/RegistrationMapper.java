@@ -19,6 +19,9 @@ public abstract class RegistrationMapper {
         user.setLastName(registrationDto.getLastName());
         user.setPassword(passwordEncoder.encode(registrationDto.getPassword()));
         user.setEnabled(false);
+        user.setAccountNonExpired(true);
+        user.setAccountNonLocked(true);
+        user.setCredentialsNonExpired(true);
         return user;
     }
 }
