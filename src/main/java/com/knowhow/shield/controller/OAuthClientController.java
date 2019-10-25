@@ -15,17 +15,17 @@ public class OAuthClientController {
 
     private final OAuthClientService oauthClientService;
 
-    @GetMapping("/oauth-client/{id}")
+    @GetMapping("/oauth-clients/{id}")
     public OAuthClientDto get(@PathVariable String id) {
         return oauthClientService.get(id);
     }
 
-    @GetMapping("/oauth-client")
+    @GetMapping("/oauth-clients")
     public List<OAuthClientDto> getAll() {
         return oauthClientService.getAll();
     }
 
-    @PostMapping("/oauth-client")
+    @PostMapping("/oauth-clients")
     public void create(OAuthClientDto client) {
         oauthClientService.create(client);
     }

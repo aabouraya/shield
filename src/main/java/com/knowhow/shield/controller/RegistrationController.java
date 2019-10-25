@@ -24,12 +24,12 @@ class RegistrationController {
         this.registrationService = registrationService;
     }
 
-    @PostMapping(value = "/registration")
+    @PostMapping(value = "/users/register")
     public ResponseEntity<Long> signUp(@Valid @RequestBody RegistrationDto user) {
         return new ResponseEntity(registrationService.register(user), HttpStatus.CREATED);
     }
 
-    @GetMapping(value = "/activation/{token}")
+    @GetMapping(value = "/users/activate/{token}")
     public ResponseEntity<UUID> activate(@PathVariable String token) {
         return new ResponseEntity(activationService.activateUser(token), HttpStatus.OK);
     }
