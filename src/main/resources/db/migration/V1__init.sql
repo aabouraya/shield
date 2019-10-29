@@ -5,13 +5,6 @@ create table roles
     primary key (id)
 );
 
-create table privileges
-(
-    id   bigint       not null,
-    name varchar(255) not null unique,
-    primary key (id)
-);
-
 create table users
 (
     id                      binary(16)   not null,
@@ -36,8 +29,8 @@ create table users_roles
 
 create table roles_privileges
 (
-    role_id      bigint not null,
-    privilege_id bigint not null
+    role_id    bigint       not null,
+    privileges varchar(255) not null
 );
 
 -- CREATE TABLE IF NOT EXISTS authorities
@@ -119,26 +112,17 @@ VALUES ('user@shild.com', true, true, true, true, 'user', 'again',
 INSERT INTO roles(id, name)
 VALUES (1, 'ADMIN');
 
-INSERT INTO privileges(id, name)
+INSERT INTO roles_privileges(role_id, privileges)
 VALUES (1, 'CREATE');
-INSERT INTO privileges(id, name)
-VALUES (2, 'READ');
-INSERT INTO privileges(id, name)
-VALUES (3, 'UPDATE');
-INSERT INTO privileges(id, name)
-VALUES (4, 'DELETE');
+INSERT INTO roles_privileges(role_id, privileges)
+VALUES (1, 'READ');
+INSERT INTO roles_privileges(role_id, privileges)
+VALUES (1, 'UPDATE');
+INSERT INTO roles_privileges(role_id, privileges)
+VALUES (1, 'DELETE');
 
 INSERT INTO users_roles(user_id, role_id)
 VALUES ('21ae7719e3f64465ba7ed66cfec9fa90', 1);
-
--- INSERT INTO roles_privileges(role_id, privilege_id)
--- VALUES (1, 1);
-INSERT INTO roles_privileges(role_id, privilege_id)
-VALUES (1, 2);
--- INSERT INTO roles_privileges(role_id, privilege_id)
--- VALUES (1, 3);
--- INSERT INTO roles_privileges(role_id, privilege_id)
--- VALUES (1, 4);
 
 INSERT INTO oauth_client_details (client_id, client_secret, scope, authorized_grant_types, authorities,
                                   access_token_validity)

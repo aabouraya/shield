@@ -21,7 +21,7 @@ public interface UserMapper {
         Set<SimpleGrantedAuthority> grantedAuthority = new HashSet<>();
         for (Role r : user.getRoles()) {
             grantedAuthority.addAll(r.getPrivileges().stream()
-                    .map(p -> new SimpleGrantedAuthority("ROLE_" + r.getName() + "_" + p.getName())).collect(toSet()));
+                    .map(p -> new SimpleGrantedAuthority("ROLE_" + r.getName() + "_" + p)).collect(toSet()));
         }
         return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(),
                 user.isEnabled(), user.isAccountNonExpired(), user.isCredentialsNonExpired(), user.isAccountNonLocked(),

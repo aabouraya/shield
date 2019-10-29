@@ -1,14 +1,18 @@
 package com.knowhow.shield.model;
 
 import java.util.List;
+import java.util.Set;
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import lombok.EqualsAndHashCode;
@@ -32,8 +36,8 @@ public class Role {
     @ManyToMany(mappedBy = "roles")
     private List<User> users;
 
-    @EqualsAndHashCode.Exclude
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "roles_privileges", joinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "privilege_id", referencedColumnName = "id"))
-    private List<Privilege> privileges;
+    @ElementCollection(targetClass = Privilege.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "roles_privileges", joinColumns = @JoinColumn(name = "role_id"))
+    @Enumerated(EnumType.STRING)
+    private Set<Privilege> privileges;
 }
