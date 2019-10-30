@@ -1,5 +1,8 @@
 package com.knowhow.shield.config;
 
+import com.google.common.base.Charsets;
+import com.google.common.io.Files;
+import java.io.IOException;
 import java.security.KeyPair;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -21,12 +24,14 @@ public class TokenConfiguration {
     private final AuthenticationManager authenticationManager;
 
     @Bean
-    public JwtAccessTokenConverter jwtAccessTokenConverter() {
+    public JwtAccessTokenConverter jwtAccessTokenConverter() throws IOException {
         AppProperties.Jwt jwt = appProperties.getJwt();
         KeyPair keyPair = new KeyStoreKeyFactory(jwt.getKeyStore(), jwt.getKeyStorePassword().toCharArray())
                 .getKeyPair(jwt.getKeyPairAlias(), jwt.getKeyPairPassword().toCharArray());
         JwtAccessTokenConverter jwtAccessTokenConverter = new JwtAccessTokenConverter();
         jwtAccessTokenConverter.setKeyPair(keyPair);
+        jwtAccessTokenConverter.setVerifierKey(
+                Files.asCharSource(appProperties.getJwt().getPublicKey().getFile(), Charsets.UTF_8).read());
         return jwtAccessTokenConverter;
     }
 

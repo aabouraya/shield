@@ -32,12 +32,14 @@ class UserController {
     }
 
     @PutMapping("/users/{id}")
+    @Secured("ROLE_ADMIN_UPDATE")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateUser(@PathVariable UUID id, @Valid @RequestBody UserDto user) {
         userService.updateUser(id, user);
     }
 
     @DeleteMapping("/users/{id}")
+    @Secured("ROLE_ADMIN_DELETE")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteUser(@PathVariable UUID id) {
         userService.deleteUser(id);

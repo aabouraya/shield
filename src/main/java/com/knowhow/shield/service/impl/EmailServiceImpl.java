@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cloud.stream.messaging.Source;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Service;
@@ -18,8 +17,8 @@ import org.springframework.stereotype.Service;
 class EmailServiceImpl implements EmailService {
 
     private static final String ACTIVATION_MAIL_SUBJECT = "Activation Code";
+    private static final String ACTIVATION_TEMPLATE = "activation_template";
     private final AppProperties appProperties;
-    private final SimpleMailMessage activationMessage;
     private final Source source;
 
 
@@ -30,22 +29,9 @@ class EmailServiceImpl implements EmailService {
         map.put("name", user.getFirstName());
         map.put("activateUrl", appProperties.getApp().getActivationDomainUrl() + "/" + token);
 
-        EmailDto message = new EmailDto(ACTIVATION_MAIL_SUBJECT, user.getEmail(),
-                String.format(activationMessage.getText(), user.getFirstName(),
-                        appProperties.getApp().getActivationDomainUrl(), token), map);
+        EmailDto message = new EmailDto(ACTIVATION_MAIL_SUBJECT, user.getEmail(), ACTIVATION_TEMPLATE, map);
         source.output().send((MessageBuilder.withPayload(message).build()));
         return message;
     }
-
-//    @Override
-//    @StreamListener(Sink.INPUT)
-//    public void send(ActivationMessageDto message) {
-//        SimpleMailMessage m = new SimpleMailMessage();
-//        m.setTo(message.getTo());
-//        m.setFrom("admin@shied.com");
-//        m.setSubject(message.getSubject());
-//        m.setText(message.getText());
-//        mailSender.send(m);
-//    }
 
 }

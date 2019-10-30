@@ -105,21 +105,21 @@ CREATE TABLE IF NOT EXISTS oauth_code
 
 INSERT INTO users (email, enabled, account_non_expired, credentials_non_expired, account_non_locked, first_name,
                    last_name, password, token_expired, id)
-VALUES ('user@shild.com', true, true, true, true, 'user', 'again',
+VALUES ('admin@shild.com', true, true, true, true, 'user', 'again',
         '{bcrypt}$2a$10$cyf5NfobcruKQ8XGjUJkEegr9ZWFqaea6vjpXWEaSqTa2xL9wjgQC',
         false, '21ae7719e3f64465ba7ed66cfec9fa90');
 
 INSERT INTO roles(id, name)
 VALUES (1, 'ADMIN');
 
-INSERT INTO roles_privileges(role_id, privileges)
-VALUES (1, 'CREATE');
+-- INSERT INTO roles_privileges(role_id, privileges)
+-- VALUES (1, 'CREATE');
 INSERT INTO roles_privileges(role_id, privileges)
 VALUES (1, 'READ');
-INSERT INTO roles_privileges(role_id, privileges)
-VALUES (1, 'UPDATE');
-INSERT INTO roles_privileges(role_id, privileges)
-VALUES (1, 'DELETE');
+-- INSERT INTO roles_privileges(role_id, privileges)
+-- VALUES (1, 'UPDATE');
+-- INSERT INTO roles_privileges(role_id, privileges)
+-- VALUES (1, 'DELETE');
 
 INSERT INTO users_roles(user_id, role_id)
 VALUES ('21ae7719e3f64465ba7ed66cfec9fa90', 1);
@@ -127,7 +127,7 @@ VALUES ('21ae7719e3f64465ba7ed66cfec9fa90', 1);
 INSERT INTO oauth_client_details (client_id, client_secret, scope, authorized_grant_types, authorities,
                                   access_token_validity)
 
-VALUES ('shield_client', '{bcrypt}$2a$10$vCXMWCn7fDZWOcLnIEhmK.74dvK1Eh8ae2WrWlhr2ETPLoxQctN4.', 'read,write',
+VALUES ('shield_client', '{bcrypt}$2a$10$vCXMWCn7fDZWOcLnIEhmK.74dvK1Eh8ae2WrWlhr2ETPLoxQctN4.', 'shield',
         'password,refresh_token,client_credentials',
         'ROLE_ADMIN_CREATE,ROLE_ADMIN_READ,ROLE_ADMIN_UPDATE,ROLE_ADMIN_DELETE', 300);
 
