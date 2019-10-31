@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
 @Slf4j
-class IamControllerAdvice {
+class ShieldControllerAdvice {
 
     @ExceptionHandler(UserIsAlreadyExistException.class)
     public ResponseEntity<String> userIsAlreadyException(UserIsAlreadyExistException exp) {

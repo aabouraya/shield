@@ -15,7 +15,7 @@ import org.springframework.security.oauth2.provider.token.TokenStore;
 public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter {
 
     private final TokenStore tokenStore;
-    private final String USER_PATTERN = "/user/**";
+    private final String USER_PATTERN = "/shield/**";
 
     @Override
     public void configure(final ResourceServerSecurityConfigurer resources) {
@@ -24,8 +24,13 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests().antMatchers("/users/activate/**").permitAll().antMatchers("/users/register")
-                .permitAll().antMatchers(HttpMethod.OPTIONS, USER_PATTERN).permitAll()
+        http.authorizeRequests().antMatchers("/shield/users/activate/**").permitAll()
+                .antMatchers("/shield/users/register").permitAll()
+
+                .antMatchers("/webjars/**", "/v2/**", "/swagger-ui.html", "/swagger-resources/**").permitAll()
+                .antMatchers("/h2-console/**").permitAll().antMatchers("/healthcheck").permitAll()
+
+                .antMatchers(HttpMethod.OPTIONS, USER_PATTERN).permitAll()
                 .antMatchers(HttpMethod.GET, USER_PATTERN).access("#oauth2.hasScope('shield')")
                 .antMatchers(HttpMethod.POST, USER_PATTERN).access("#oauth2.hasScope('shield')")
                 .antMatchers(HttpMethod.PATCH, USER_PATTERN).access("#oauth2.hasScope('shield')")
