@@ -24,10 +24,13 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests().antMatchers(HttpMethod.GET, USER_PATTERN).access("#oauth2.hasScope('shield')")
+        http.authorizeRequests().antMatchers("/users/activate/**").permitAll().antMatchers("/users/register")
+                .permitAll().antMatchers(HttpMethod.OPTIONS, USER_PATTERN).permitAll()
+                .antMatchers(HttpMethod.GET, USER_PATTERN).access("#oauth2.hasScope('shield')")
                 .antMatchers(HttpMethod.POST, USER_PATTERN).access("#oauth2.hasScope('shield')")
                 .antMatchers(HttpMethod.PATCH, USER_PATTERN).access("#oauth2.hasScope('shield')")
                 .antMatchers(HttpMethod.PUT, USER_PATTERN).access("#oauth2.hasScope('shield')")
-                .antMatchers(HttpMethod.DELETE, USER_PATTERN).access("#oauth2.hasScope('shield')");
+                .antMatchers(HttpMethod.DELETE, USER_PATTERN).access("#oauth2.hasScope('shield')").anyRequest()
+                .authenticated().and().csrf().disable();
     }
 }
