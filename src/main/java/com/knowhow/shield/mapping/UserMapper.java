@@ -25,10 +25,9 @@ public interface UserMapper {
         }
 
         return org.springframework.security.core.userdetails.User.builder().username(user.getEmail())
-                .password(user.getPassword()).disabled(!user.isEnabled()).authorities(grantedAuthority).build();
-//        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(),
-//                user.isEnabled(), user.isAccountNonExpired(), user.isCredentialsNonExpired(), user.isAccountNonLocked(),
-//                grantedAuthority);
+                .password(user.getPassword()).disabled(!user.isEnabled()).accountExpired(user.isAccountExpired())
+                .credentialsExpired(user.isCredentialsExpired()).accountLocked(user.isAccountLocked())
+                .authorities(grantedAuthority).build();
     }
 
     void updateFromDto(UserDto userDto, @MappingTarget User user);

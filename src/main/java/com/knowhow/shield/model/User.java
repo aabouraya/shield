@@ -44,20 +44,20 @@ public class User {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
-    @Column(name = "enabled", nullable = false)
+    @Column(name = "enabled")
     private boolean enabled;
 
-    @Column(name = "token_expired", nullable = false)
+    @Column(name = "token_expired")
     private boolean tokenExpired;
 
-    @Column(name = "account_non_expired", nullable = false)
-    private boolean accountNonExpired;
+    @Column(name = "account_expired")
+    private boolean accountExpired;
 
-    @Column(name = "credentials_non_expired", nullable = false)
-    private boolean credentialsNonExpired;
+    @Column(name = "credentials_expired")
+    private boolean credentialsExpired;
 
-    @Column(name = "account_non_locked", nullable = false)
-    private boolean accountNonLocked;
+    @Column(name = "account_locked")
+    private boolean accountLocked;
 
     @EqualsAndHashCode.Exclude
     @ManyToMany(fetch = FetchType.EAGER)
