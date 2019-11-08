@@ -23,9 +23,12 @@ public interface UserMapper {
             grantedAuthority.addAll(r.getPrivileges().stream()
                     .map(p -> new SimpleGrantedAuthority("ROLE_" + r.getName() + "_" + p)).collect(toSet()));
         }
-        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(),
-                user.isEnabled(), user.isAccountNonExpired(), user.isCredentialsNonExpired(), user.isAccountNonLocked(),
-                grantedAuthority);
+
+        return org.springframework.security.core.userdetails.User.builder().username(user.getEmail())
+                .password(user.getPassword()).disabled(!user.isEnabled()).authorities(grantedAuthority).build();
+//        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(),
+//                user.isEnabled(), user.isAccountNonExpired(), user.isCredentialsNonExpired(), user.isAccountNonLocked(),
+//                grantedAuthority);
     }
 
     void updateFromDto(UserDto userDto, @MappingTarget User user);

@@ -55,7 +55,8 @@ public class RegistrationControllerTest {
         doReturn(id).when(registrationService).register(any());
 
         //Act
-        MockHttpServletResponse response = mvc.perform(post("/registration").contentType(MediaType.APPLICATION_JSON)
+        MockHttpServletResponse response = mvc
+                .perform(post("/shield/users/register").contentType(MediaType.APPLICATION_JSON)
                 .content(jsonRegistrationDto.write(registrationDto).getJson())).andReturn().getResponse();
 
         //Assert
@@ -70,7 +71,7 @@ public class RegistrationControllerTest {
         doReturn(id).when(activationService).activateUser("1234");
 
         //Act
-        MockHttpServletResponse response = mvc.perform(get("/activation/1234")).andReturn().getResponse();
+        MockHttpServletResponse response = mvc.perform(get("/shield/users/activate/1234")).andReturn().getResponse();
 
         //Assert
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());

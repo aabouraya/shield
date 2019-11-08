@@ -62,7 +62,7 @@ public class UserControllerTest {
         doReturn(page).when(userService).getUsers(any());
 
         //Act
-        ResultActions result = mvc.perform(get("/users").contentType(MediaType.APPLICATION_JSON));
+        ResultActions result = mvc.perform(get("/shield/users").contentType(MediaType.APPLICATION_JSON));
 
         //Assert
         result.andExpect(status().isOk()).andExpect(jsonPath("content[0].firstName", is("mark")))
@@ -81,7 +81,7 @@ public class UserControllerTest {
         ArgumentCaptor<UserDto> userCapture = ArgumentCaptor.forClass(UserDto.class);
 
         //Act
-        ResultActions result = mvc.perform(put("/users/{id}", id).contentType(MediaType.APPLICATION_JSON_UTF8)
+        ResultActions result = mvc.perform(put("/shield/users/{id}", id).contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(jacksonTester.write(user).getJson()));
 
         //Assert
@@ -99,7 +99,7 @@ public class UserControllerTest {
         doNothing().when(userService).deleteUser(id);
 
         //Act
-        ResultActions result = mvc.perform(delete("/users/{id}", id));
+        ResultActions result = mvc.perform(delete("/shield/users/{id}", id));
 
         //Assert
         result.andExpect(status().isNoContent());

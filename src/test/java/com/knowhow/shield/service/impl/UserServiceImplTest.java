@@ -117,6 +117,7 @@ public class UserServiceImplTest {
         //Arrange
         RegistrationDto dto = mock(RegistrationDto.class);
         User user = mock(User.class);
+
         when(userRepository.save(any(User.class))).thenReturn(user);
         when(registrationMapper.toUser(any())).thenReturn(user);
 
