@@ -1,7 +1,8 @@
 package com.knowhow.shield.service.impl;
 
+import com.knowhow.postoffice.contract.EmailDto;
+import com.knowhow.postoffice.contract.Template;
 import com.knowhow.shield.config.AppProperties;
-import com.knowhow.shield.dto.EmailDto;
 import com.knowhow.shield.model.User;
 import com.knowhow.shield.service.EmailService;
 import java.util.HashMap;
@@ -17,7 +18,6 @@ import org.springframework.stereotype.Service;
 class EmailServiceImpl implements EmailService {
 
     private static final String ACTIVATION_MAIL_SUBJECT = "Activation Code";
-    private static final String ACTIVATION_TEMPLATE = "activation_template";
     private final AppProperties appProperties;
     private final Source source;
 
@@ -29,7 +29,7 @@ class EmailServiceImpl implements EmailService {
         map.put("name", user.getFirstName());
         map.put("activateUrl", appProperties.getApp().getActivationDomainUrl() + "/" + token);
 
-        EmailDto message = new EmailDto(ACTIVATION_MAIL_SUBJECT, user.getEmail(), ACTIVATION_TEMPLATE, map);
+        EmailDto message = new EmailDto(ACTIVATION_MAIL_SUBJECT, user.getEmail(), Template.ACTIVATION, map);
         source.output().send((MessageBuilder.withPayload(message).build()));
         return message;
     }

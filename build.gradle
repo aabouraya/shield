@@ -3,6 +3,7 @@ plugins {
 //    id 'io.spring.dependency-management' version '1.0.8.RELEASE'
     id 'java'
     id "net.ltgt.apt" version "0.20"
+    id 'maven-publish'
 //    id 'jacoco'
 }
 apply plugin: 'io.spring.dependency-management'
@@ -24,6 +25,18 @@ ext {
 
 repositories {
     mavenCentral()
+    mavenLocal()
+//    mavenCentral {
+//        content {
+//            // this repository contains everything BUT artifacts with group starting with "com.knowhow"
+//            excludeGroupByRegex "com\\.knowhow.*"
+//        }
+//    }
+//    mavenLocal {
+//        content {
+//            includeGroup "com.knowhow"
+//        }
+//    }
 }
 
 dependencies {
@@ -45,7 +58,7 @@ dependencies {
     compile(group: 'io.springfox', name: 'springfox-swagger-ui', version: swagger_version)
     compile(group: 'io.springfox', name: 'springfox-swagger2', version: swagger_version)
     compile(group: 'org.mapstruct', name: 'mapstruct-jdk8', version: mapstruct_version)
-
+    compile(group: 'com.knowhow', name: 'post-office-contract', version:'0.0.1')
     runtimeOnly 'org.springframework.boot:spring-boot-devtools'
     runtimeOnly 'mysql:mysql-connector-java'
     runtimeOnly(group: 'com.h2database', name: 'h2', version: h2_version)
@@ -59,6 +72,14 @@ dependencies {
 dependencyManagement {
     imports {
         mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }
     }
 }
 
