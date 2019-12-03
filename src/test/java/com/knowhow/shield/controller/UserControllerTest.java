@@ -48,6 +48,8 @@ public class UserControllerTest {
 
     private JacksonTester<UserDto> jacksonTester;
     private UUID id;
+    private final String CONTEXT_PATH = "/shield/api";
+
     @Before
     public void init() {
         mvc = MockMvcBuilders.standaloneSetup(userController)
@@ -62,7 +64,9 @@ public class UserControllerTest {
         doReturn(page).when(userService).getUsers(any());
 
         //Act
-        ResultActions result = mvc.perform(get("/shield/users").contentType(MediaType.APPLICATION_JSON));
+        ResultActions result;
+        result = mvc.perform(
+                get(CONTEXT_PATH + "/v1/users").contextPath(CONTEXT_PATH).contentType(MediaType.APPLICATION_JSON));
 
         //Assert
         result.andExpect(status().isOk()).andExpect(jsonPath("content[0].firstName", is("mark")))
@@ -81,8 +85,8 @@ public class UserControllerTest {
         ArgumentCaptor<UserDto> userCapture = ArgumentCaptor.forClass(UserDto.class);
 
         //Act
-        ResultActions result = mvc.perform(put("/shield/users/{id}", id).contentType(MediaType.APPLICATION_JSON_UTF8)
-                .content(jacksonTester.write(user).getJson()));
+        ResultActions result = mvc.perform(put(CONTEXT_PATH + "/v1/users/{id}", id).contextPath(CONTEXT_PATH)
+                .contentType(MediaType.APPLICATION_JSON_UTF8).content(jacksonTester.write(user).getJson()));
 
         //Assert
         result.andExpect(status().isNoContent());
@@ -99,7 +103,7 @@ public class UserControllerTest {
         doNothing().when(userService).deleteUser(id);
 
         //Act
-        ResultActions result = mvc.perform(delete("/shield/users/{id}", id));
+        ResultActions result = mvc.perform(delete(CONTEXT_PATH + "/v1/users/{id}", id).contextPath(CONTEXT_PATH));
 
         //Assert
         result.andExpect(status().isNoContent());
