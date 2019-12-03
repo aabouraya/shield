@@ -2,17 +2,6 @@ spring:
   h2:
     console:
       enabled: true
-
-  mail:
-    host: localhost
-    port: 2525
-    username: admin
-    password: admin
-    properties:
-      mail:
-        smtp:
-          auth: false
-
   datasource:
     url: jdbc:h2:mem:shield
     driver-class-name: org.h2.Driver
@@ -22,6 +11,7 @@ spring:
     hibernate:
       ddl-auto: update
     database: h2
+  #    open-in-view: false
 
   cloud:
     stream:
@@ -29,31 +19,32 @@ spring:
         output:
           destination: emails
           group: mails-group
-        input:
-          destination: emails
-          group: mails-group
-
-
 
 server:
   port: 9090
+  servlet:
+    context-path: /shield/api
+
 shield:
   jwt:
-    key-store: "classpath:keystore.jks"
-    key-store-password: "letmein"
-    key-pair-alias: "mytestkey"
-    key-pair-password: "changeme"
+    key-store: "classpath:shield.jks"
+    key-store-password: "xxx"
+    key-pair-alias: "shield"
+    key-pair-password: "xxx"
+    public-key: "classpath:public.txt"
   app:
     activationDomainUrl: http://localhost:9090/activation
 
 logging:
   level:
     org:
+      springframework:
+        web: debug
       hibernate:
         SQL: debug
-
 
   #  datasource:
   #    url: jdbc:mysql://localhost:3306/shield?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true
   #    username: root
+
 #    password: passw0rd

@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(value = "/shield", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/v1", produces = MediaType.APPLICATION_JSON_VALUE)
 class UserController {
 
     private UserService userService;
