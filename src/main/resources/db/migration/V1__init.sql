@@ -12,6 +12,7 @@ create table users
     enabled             boolean      not null,
     first_name          varchar(255) not null,
     last_name           varchar(255) not null,
+    party_id            binary(16),
     password            varchar(255) not null,
     token_expired       boolean      not null,
     account_expired     boolean DEFAULT FALSE,

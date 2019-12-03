@@ -1,6 +1,7 @@
 package com.knowhow.shield.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import javax.persistence.Column;
@@ -39,6 +40,9 @@ public class User {
 
     @NaturalId
     private String email;
+
+    @Column(name = "party_id")
+    private Optional<UUID> partyId;
 
     @Column(name = "password", nullable = false)
     @ToString.Exclude

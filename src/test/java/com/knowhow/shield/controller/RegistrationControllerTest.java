@@ -41,6 +41,8 @@ public class RegistrationControllerTest {
 
     private JacksonTester<RegistrationDto> jsonRegistrationDto;
 
+    private final String CONTEXT_PATH = "/shield/api";
+
     @Before
     public void init() {
         JacksonTester.initFields(this, new ObjectMapper());
@@ -55,9 +57,10 @@ public class RegistrationControllerTest {
         doReturn(id).when(registrationService).register(any());
 
         //Act
-        MockHttpServletResponse response = mvc
-                .perform(post("/shield/users/register").contentType(MediaType.APPLICATION_JSON)
-                .content(jsonRegistrationDto.write(registrationDto).getJson())).andReturn().getResponse();
+        MockHttpServletResponse response = mvc.perform(
+                post(CONTEXT_PATH + "/v1/users/register").contextPath(CONTEXT_PATH)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(jsonRegistrationDto.write(registrationDto).getJson())).andReturn().getResponse();
 
         //Assert
         assertThat(response.getStatus()).isEqualTo(HttpStatus.CREATED.value());
@@ -71,7 +74,9 @@ public class RegistrationControllerTest {
         doReturn(id).when(activationService).activateUser("1234");
 
         //Act
-        MockHttpServletResponse response = mvc.perform(get("/shield/users/activate/1234")).andReturn().getResponse();
+        MockHttpServletResponse response = mvc
+                .perform(get(CONTEXT_PATH + "/v1/users/activate/1234").contextPath(CONTEXT_PATH)).andReturn()
+                .getResponse();
 
         //Assert
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
