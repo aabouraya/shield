@@ -24,18 +24,18 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests().antMatchers("/shield/users/activate/**").permitAll()
-                .antMatchers("/shield/users/register").permitAll()
+        http.authorizeRequests().antMatchers("/shield/api/v1/users/activate/**").permitAll()
+                .antMatchers("/shield/api/v1/users/register").permitAll()
 
                 .antMatchers("/webjars/**", "/v2/**", "/swagger-ui.html", "/swagger-resources/**").permitAll()
                 .antMatchers("/h2-console/**").permitAll().antMatchers("/healthcheck").permitAll()
 
-                .antMatchers(HttpMethod.OPTIONS, USER_PATTERN).permitAll()
-                .antMatchers(HttpMethod.GET, USER_PATTERN).access("#oauth2.hasScope('shield')")
-                .antMatchers(HttpMethod.POST, USER_PATTERN).access("#oauth2.hasScope('shield')")
-                .antMatchers(HttpMethod.PATCH, USER_PATTERN).access("#oauth2.hasScope('shield')")
-                .antMatchers(HttpMethod.PUT, USER_PATTERN).access("#oauth2.hasScope('shield')")
-                .antMatchers(HttpMethod.DELETE, USER_PATTERN).access("#oauth2.hasScope('shield')").anyRequest()
+                .antMatchers(HttpMethod.OPTIONS, USER_PATTERN).permitAll().antMatchers(HttpMethod.GET, USER_PATTERN)
+                .access("#oauth2.hasScope('shield')").antMatchers(HttpMethod.POST, USER_PATTERN)
+                .access("#oauth2.hasScope('shield')").antMatchers(HttpMethod.PATCH, USER_PATTERN)
+                .access("#oauth2.hasScope('shield')").antMatchers(HttpMethod.PUT, USER_PATTERN)
+                .access("#oauth2.hasScope('shield')").antMatchers(HttpMethod.DELETE, USER_PATTERN)
+                .access("#oauth2.hasScope('shield')").anyRequest()
                 .authenticated().and().csrf().disable();
     }
 }

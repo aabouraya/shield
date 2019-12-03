@@ -39,17 +39,6 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-//        http.csrf().disable().headers().frameOptions().sameOrigin().and().authorizeRequests()
-//                .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-//                .antMatchers("/webjars/**", "/v2/**", "/swagger-ui.html", "/swagger-resources/**").permitAll()
-//                .antMatchers("/h2-console/**").permitAll()
-//                .antMatchers("/healthcheck").permitAll()
-//                .antMatchers("/users/activate/**").permitAll()
-//                .antMatchers("/users/register").permitAll()
-//                .antMatchers("/oauth-client/**").permitAll()
-//                .anyRequest().authenticated()
-//                .and().sessionManagement()
-//                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        http.csrf().disable().authorizeRequests().anyRequest().authenticated();
+      http.csrf().disable().authorizeRequests().anyRequest().authenticated();
     }
 }
