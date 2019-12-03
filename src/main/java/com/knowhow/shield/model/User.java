@@ -17,6 +17,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.NaturalId;
 
 @Entity
 @Table(name = "users")
@@ -36,7 +37,7 @@ public class User {
     @Column(name = "last_name", nullable = false)
     private String lastName;
 
-    @Column(name = "email", nullable = false)
+    @NaturalId
     private String email;
 
     @Column(name = "password", nullable = false)

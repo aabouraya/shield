@@ -1,5 +1,6 @@
 package com.knowhow.shield.service.impl;
 
+import com.google.common.collect.ImmutableMap;
 import com.knowhow.shield.mapping.UserMapper;
 import com.knowhow.shield.model.User;
 import com.knowhow.shield.repository.UserRepository;
@@ -18,7 +19,8 @@ class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) {
-        User user = userRepository.findByEmail(username).orElseThrow(() -> new UsernameNotFoundException(username));
+        User user = userRepository.findByNaturalId(ImmutableMap.of("email", username))
+                .orElseThrow(() -> new UsernameNotFoundException(username));
         return userMapper.toUserDetails(user);
 
     }
