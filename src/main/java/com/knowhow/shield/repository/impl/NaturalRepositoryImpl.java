@@ -32,7 +32,6 @@ public class NaturalRepositoryImpl<T, ID extends Serializable> extends SimpleJpa
     public Optional<T> findByNaturalId(Map<String, Object> naturalIds) {
         NaturalIdLoadAccess<T> loadAccess = entityManager.unwrap(Session.class).byNaturalId(this.getDomainClass());
         naturalIds.forEach(loadAccess::using);
-
         return loadAccess.loadOptional();
     }
 }

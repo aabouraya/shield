@@ -52,6 +52,17 @@ public class TokenConfiguration {
         return new JwtTokenStore(jwtAccessTokenConverter);
     }
 
+    @Bean
+    public TokenEnhancer tokenEnhancer(){
+        return (accessToken, authentication) -> {
+            Map<String, Object> additionalInfo = new HashMap<>();
+            //EnhancedUserDetails user = (EnhancedUserDetails) authentication.getPrincipal();
+            additionalInfo.put("partyId", "fixed value");
+            ((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(additionalInfo);
+            return accessToken;
+        };
+    }
+
 //    @Bean
 //    public JwtAccessTokenConverter accessTokenConverter() {
 //        final JwtAccessTokenConverter converter = new JwtAccessTokenConverter(){
@@ -82,10 +93,6 @@ public class TokenConfiguration {
             final ClientDetailsService clientDetailsService) {
         DefaultTokenServices tokenServices = new DefaultTokenServices();
         tokenServices.setSupportRefreshToken(true);
-        tokenServices.setTokenEnhancer((accessToken, auth) -> {
-            ((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(ImmutableMap.of("party_id", "fixed_value"));
-            return accessToken;
-        });
         tokenServices.setTokenStore(tokenStore);
         tokenServices.setClientDetailsService(clientDetailsService);
         tokenServices.setAuthenticationManager(this.authenticationManager);
