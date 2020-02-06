@@ -3,7 +3,6 @@ package com.knowhow.shield.dto;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.UUID;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,7 +13,7 @@ import org.springframework.security.core.GrantedAuthority;
 @EqualsAndHashCode
 public class EnhancedUserDetails extends org.springframework.security.core.userdetails.User {
 
-    private Optional<UUID> customerId;
+    private Optional<UUID> partyId;
 
     public EnhancedUserDetails(String username, String password, boolean enabled, boolean accountNonExpired,
             boolean credentialsNonExpired, boolean accountNonLocked,

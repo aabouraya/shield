@@ -2,6 +2,7 @@ package com.knowhow.shield.mapping;
 
 import static java.util.stream.Collectors.toSet;
 
+import com.knowhow.shield.dto.EnhancedUserDetails;
 import com.knowhow.shield.dto.UserDto;
 import com.knowhow.shield.model.Role;
 import com.knowhow.shield.model.User;
@@ -24,10 +25,11 @@ public interface UserMapper {
                     .map(p -> new SimpleGrantedAuthority("ROLE_" + r.getName() + "_" + p)).collect(toSet()));
         }
 
-        return org.springframework.security.core.userdetails.User.builder().username(user.getEmail())
-                .password(user.getPassword()).disabled(!user.isEnabled()).accountExpired(user.isAccountExpired())
-                .credentialsExpired(user.isCredentialsExpired()).accountLocked(user.isAccountLocked())
-                .authorities(grantedAuthority).build();
+        EnhancedUserDetails enhancedUserDetails = new EnhancedUserDetails(user.getEmail(), user.getPassword(),
+                user.isEnabled(), !user.isAccountExpired(), !user.isCredentialsExpired(), !user.isAccountLocked(),
+                grantedAuthority);
+        enhancedUserDetails.setPartyId(user.getPartyId());
+        return enhancedUserDetails;
     }
 
     void updateFromDto(UserDto userDto, @MappingTarget User user);
